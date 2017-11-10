@@ -2,7 +2,7 @@
 
 # read config file and initialize variables.
 # config file is ...
-source ./ovhnotofier.conf
+source ./ovhnotifier.conf
 
 # check default values.
 ######################################
@@ -14,15 +14,16 @@ source ./ovhnotofier.conf
 
 # consumer key initializer:
 function get_cons_key() {
-    ovh_cons_key=$(curl -XPOST -H"X-Ovh-Applicatio: ${ovh_app_key}" \
+    ovh_cons_key=$(curl -XPOST -H"X-Ovh-Application: ${ovh_app_key}" \
                         -H"Content-type: application/json" \
-                        "${ovh_api}auth/credential" \
-                        -d '{"accessRules":[{"method":"GET", "path":"/*"}], "redirection":"${domain}"}' | jq -r ".consumerKey")
+                        "${ovh_api}/auth/credential" \
+                        -d '{"accessRules":[{"method":"GET", "path":"/*"}]}' | jq -r ".consumerKey")
     echo "${ovh_cons_key}"
 }
 
-# # generate signature.
-# function gen_sign(){
-    
-# }
+# get timestamp
+function get_timestamp() {
+    timestamp=$(curl "${ovh_api}/auth/time")
+    echo "${timestamp}"
+}
 
